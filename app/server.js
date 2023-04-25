@@ -15,9 +15,6 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/app', express.static (path.join (__dirname, '/public')))
 
-let port = process.env.PORT || 8000
-app.listen (port)
-
 const apiRouter = require('./api/routes/apiRouter')
 app.use ('/api', apiRouter)
 
@@ -26,4 +23,4 @@ const options = {
     cert: fs.readFileSync('/etc/letsencrypt/live/gpucserver.vps.webdock.cloud/fullchain.pem')
 };
 
-https.createServer(options, app).listen(8000);
+https.createServer(options, app).listen(3000);
