@@ -4,9 +4,11 @@ let apiRouter = express.Router();
 
 const endpoint = '/';
 var lista_produtos = [
-    { id: 1, descricao: "Produto 1", valor: 5.00, marca: "marca 1" },
-    { id: 2, descricao: "Produto 2", valor: 10.00, marca: "marca 2" },
-    { id: 3, descricao: "Produto 3", valor: 15.00, marca: "marca 3" },
+    { id: 1, descricao: "Tênis", valor: 500.00, marca: "Nike" },
+    { id: 2, descricao: "Camiseta ", valor: 100.00, marca: "Adidas" },
+    { id: 3, descricao: "Calça", valor: 150.00, marca: "Polo Wear" },
+    { id: 4, descricao: "Blusa", valor: 150.00, marca: "Fila" },
+    { id: 5, descricao: "Bermuda", valor: 150.00, marca: "Polo Wear" },
 ];
 
 //Obter lista de produtos
