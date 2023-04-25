@@ -1,4 +1,4 @@
-require('dotenv').config()
+// require('dotenv').config()
 
 const express = require ('express');
 const https = require('https');
@@ -27,4 +27,5 @@ const options = {
     cert: fs.readFileSync('/etc/letsencrypt/live/$DOMAIN/fullchain.pem')
 };
 
+// app.listen(8000);
 https.createServer(options, app).listen(8000);
