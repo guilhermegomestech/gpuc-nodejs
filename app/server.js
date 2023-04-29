@@ -20,9 +20,11 @@ const apiRouterAPIv2 = require('./api/routes/apiRouter-v2')
 app.use ('/api/v1', apiRouter)
 app.use ('/api/v2', apiRouterAPIv2)
 
-const options = {
-    key: fs.readFileSync('/etc/letsencrypt/live/gpucserver.vps.webdock.cloud/privkey.pem'),
-    cert: fs.readFileSync('/etc/letsencrypt/live/gpucserver.vps.webdock.cloud/fullchain.pem')
-};
+//const options = {
+//    key: fs.readFileSync('/etc/letsencrypt/live/gpucserver.vps.webdock.cloud/privkey.pem'),
+//    cert: fs.readFileSync('/etc/letsencrypt/live/gpucserver.vps.webdock.cloud/fullchain.pem')
+//};
+const port = process.env.PORT || 3000;
 
-https.createServer(options, app).listen(3000);
+app.listen(port);
+//https.createServer(options, app).listen(3000);
