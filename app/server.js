@@ -16,7 +16,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/app', express.static (path.join (__dirname, '/public')))
 
 const apiRouter = require('./api/routes/apiRouter')
-app.use ('/api', apiRouter)
+const apiRouterAPIv2 = require('./api/routes/apiRouter-v2')
+app.use ('/api/v1', apiRouter)
+app.use ('/api/v2', apiRouterAPIv2)
 
 const options = {
     key: fs.readFileSync('/etc/letsencrypt/live/gpucserver.vps.webdock.cloud/privkey.pem'),
