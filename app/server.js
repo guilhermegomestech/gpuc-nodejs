@@ -18,9 +18,11 @@ app.use('/app', express.static (path.join (__dirname, '/public')))
 const apiRouter = require('./api/routes/apiRouter')
 app.use ('/api', apiRouter)
 
-const options = {
-    key: fs.readFileSync('/etc/letsencrypt/live/gpucserver.vps.webdock.cloud/privkey.pem'),
-    cert: fs.readFileSync('/etc/letsencrypt/live/gpucserver.vps.webdock.cloud/fullchain.pem')
-};
+//const options = {
+//    key: fs.readFileSync('/etc/letsencrypt/live/gpucserver.vps.webdock.cloud/privkey.pem'),
+//    cert: fs.readFileSync('/etc/letsencrypt/live/gpucserver.vps.webdock.cloud/fullchain.pem')
+//};
+const port = process.env.PORT || 3000;
 
-https.createServer(options, app).listen(3000);
+app.listen(port);
+//https.createServer(options, app).listen(3000);
