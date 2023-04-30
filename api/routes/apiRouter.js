@@ -12,7 +12,7 @@ var lista_produtos = [
 ];
 
 //Obter lista de produtos
-apiRouter.get(endpoint + 'produtos', function (req, res) {
+apiRouter.get(endpoint, function (req, res) {
     if (lista_produtos.length > 0) {
         res.status(200).json(lista_produtos);
     } else {
@@ -21,7 +21,7 @@ apiRouter.get(endpoint + 'produtos', function (req, res) {
 });
 
 //Obter produto específico
-apiRouter.get(endpoint + 'produtos/:produtoId', function (req, res) {
+apiRouter.get(endpoint + ':produtoId', function (req, res) {
     if (produtoExiste(req.params.produtoId)) {
         res.status(200).json(lista_produtos.filter(item => item.id == req.params.produtoId));
     } else {
@@ -31,7 +31,7 @@ apiRouter.get(endpoint + 'produtos/:produtoId', function (req, res) {
 });
 
 //Incluir um produto
-apiRouter.post(endpoint + 'produtos/', function (req, res) {
+apiRouter.post(endpoint, function (req, res) {
     let produto = req.body;
 
     produto.id = buscarProximoIdProduto();
@@ -41,7 +41,7 @@ apiRouter.post(endpoint + 'produtos/', function (req, res) {
 });
 
 //Alterar um produto
-apiRouter.put(endpoint + 'produtos/:produtoId', function (req, res) {
+apiRouter.put(endpoint + ':produtoId', function (req, res) {
     let produto = req.body;
     lista_produtos = removerProduto(req.params.produtoId);
     adicionarProduto(produto);
@@ -51,7 +51,7 @@ apiRouter.put(endpoint + 'produtos/:produtoId', function (req, res) {
 });
 
 //Excluir um produto
-apiRouter.delete(endpoint + 'produtos/:produtoId', function (req, res) {
+apiRouter.delete(endpoint + ':produtoId', function (req, res) {
     lista_produtos = removerProduto(req.params.produtoId);
     res.status(200).json(lista_produtos);
 });
