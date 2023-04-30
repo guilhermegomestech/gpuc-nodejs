@@ -17,6 +17,7 @@ app.use('/app', express.static (path.join (__dirname, '/public')))
 
 const apiRouter = require('./api/routes/apiRouter')
 const apiRouterAPIv2 = require('./api/routes/apiRouter-v2')
+
 app.use ('/api/produtos', apiRouter)
 app.use ('/api/v1/series', apiRouterAPIv2)
 
@@ -28,4 +29,3 @@ const options = {
 
 // app.listen(port);
 https.createServer(options, app).listen(3000);
-

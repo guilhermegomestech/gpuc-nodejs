@@ -21,6 +21,7 @@ apiRouter.get(endpoint, function (req, res) {
 });
 
 //Obter produto específico
+
 apiRouter.get(endpoint + ':produtoId', function (req, res) {
     if (produtoExiste(req.params.produtoId)) {
         res.status(200).json(lista_produtos.filter(item => item.id == req.params.produtoId));
@@ -31,6 +32,7 @@ apiRouter.get(endpoint + ':produtoId', function (req, res) {
 });
 
 //Incluir um produto
+
 apiRouter.post(endpoint, function (req, res) {
     let produto = req.body;
 
@@ -41,6 +43,7 @@ apiRouter.post(endpoint, function (req, res) {
 });
 
 //Alterar um produto
+
 apiRouter.put(endpoint + ':produtoId', function (req, res) {
     let produto = req.body;
     lista_produtos = removerProduto(req.params.produtoId);
@@ -51,6 +54,7 @@ apiRouter.put(endpoint + ':produtoId', function (req, res) {
 });
 
 //Excluir um produto
+
 apiRouter.delete(endpoint + ':produtoId', function (req, res) {
     lista_produtos = removerProduto(req.params.produtoId);
     res.status(200).json(lista_produtos);
