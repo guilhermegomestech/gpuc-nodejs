@@ -1,17 +1,11 @@
 const express = require('express');
+const produtos = require('../../../data/produtos/produtos-faker');
 
 let apiRouter = express.Router();
 
 const endpoint = '/';
-var lista_produtos = [
-    { id: 1, descricao: "Tênis", valor: 500.00, marca: "Nike" },
-    { id: 2, descricao: "Camiseta ", valor: 100.00, marca: "Adidas" },
-    { id: 3, descricao: "Calça", valor: 150.00, marca: "Polo Wear" },
-    { id: 4, descricao: "Blusa", valor: 150.00, marca: "Fila" },
-    { id: 5, descricao: "Bermuda", valor: 150.00, marca: "Polo Wear" },
-];
+var lista_produtos = produtos.people;
 
-//Obter lista de produtos
 apiRouter.get(endpoint, function (req, res) {
     if (lista_produtos.length > 0) {
         res.status(200).json(lista_produtos);
@@ -20,9 +14,8 @@ apiRouter.get(endpoint, function (req, res) {
     }
 });
 
-//Obter produto específico
-
 apiRouter.get(endpoint + ':produtoId', function (req, res) {
+    console.log(`${lista_produtos}`)
     if (produtoExiste(req.params.produtoId)) {
         res.status(200).json(lista_produtos.filter(item => item.id == req.params.produtoId));
     } else {
@@ -30,8 +23,6 @@ apiRouter.get(endpoint + ':produtoId', function (req, res) {
     }
 
 });
-
-//Incluir um produto
 
 apiRouter.post(endpoint, function (req, res) {
     let produto = req.body;
@@ -42,8 +33,6 @@ apiRouter.post(endpoint, function (req, res) {
     res.status(200).json(lista_produtos);
 });
 
-//Alterar um produto
-
 apiRouter.put(endpoint + ':produtoId', function (req, res) {
     let produto = req.body;
     lista_produtos = removerProduto(req.params.produtoId);
@@ -53,15 +42,11 @@ apiRouter.put(endpoint + ':produtoId', function (req, res) {
     res.status(200).json(lista_produtos);
 });
 
-//Excluir um produto
-
 apiRouter.delete(endpoint + ':produtoId', function (req, res) {
     lista_produtos = removerProduto(req.params.produtoId);
     res.status(200).json(lista_produtos);
 });
 
-
-//Funções auxiliares
 function adicionarProduto(produto) {
     lista_produtos.push(produto);
 }
