@@ -1,21 +1,23 @@
 require('dotenv').config()
 const express = require ('express');
 const cors = require('cors');
-const path = require ('path');
+const path = require('path');
 const https = require('https');
 const fs = require('fs');
-const app = express ()
+const app = express()
 
 app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use('/app', express.static (path.join (__dirname, '/public')))
+app.use('/app', express.static(path.join (__dirname, '/public')))
 
+const segurancaRouter = require('./api/routes/secutiry/seguranca-router')
 const produtosRouter = require('./api/routes/produtos/produtos-router')
 const seriesRouter = require('./api/routes/series/series-router')
 
-app.use ('/api/v1/produtos', produtosRouter)
-app.use ('/api/v1/series', seriesRouter)
+app.use('/api/v1/seguranca', segurancaRouter)
+app.use('/api/v1/produtos', produtosRouter)
+app.use('/api/v1/series', seriesRouter)
 
 const port = process.env.PORT || 3000;
 if(process.env.NODE_ENV == 'DEV'){
