@@ -1,31 +1,31 @@
 require('dotenv').config()
 const express = require ('express');
 const cors = require('cors');
-const path = require ('path');
+const path = require('path');
 const https = require('https');
 const fs = require('fs');
-
-const app = express ()
+const app = express()
 
 app.use(cors())
-
 app.use(express.json());
-
 app.use(express.urlencoded({ extended: true }));
+app.use('/app', express.static(path.join (__dirname, '/public')))
 
-app.use('/app', express.static (path.join (__dirname, '/public')))
+const segurancaRouter = require('./api/routes/secutiry/seguranca-router')
+const produtosRouter = require('./api/routes/produtos/produtos-router')
+const seriesRouter = require('./api/routes/series/series-router')
 
-const apiRouter = require('./api/routes/apiRouter')
-const apiRouterAPIv2 = require('./api/routes/apiRouter-v2')
+app.use('/api/v1/seguranca', segurancaRouter)
+app.use('/api/v1/produtos', produtosRouter)
+app.use('/api/v1/series', seriesRouter)
 
-app.use ('/api/produtos', apiRouter)
-app.use ('/api/v1/series', apiRouterAPIv2)
-
-const options = {
-   key: fs.readFileSync('/etc/letsencrypt/live/gpucserver.vps.webdock.cloud/privkey.pem'),
-   cert: fs.readFileSync('/etc/letsencrypt/live/gpucserver.vps.webdock.cloud/fullchain.pem')
-};
-// const port = process.env.PORT || 3000;
-
-// app.listen(port);
-https.createServer(options, app).listen(3000);
+const port = process.env.PORT || 3000;
+if(process.env.NODE_ENV == 'DEV'){
+   app.listen(port);
+} else {
+   const options = {
+      key: fs.readFileSync('/etc/letsencrypt/live/gpucserver.vps.webdock.cloud/privkey.pem'),
+      cert: fs.readFileSync('/etc/letsencrypt/live/gpucserver.vps.webdock.cloud/fullchain.pem')
+   };
+   https.createServer(options, app).listen(port);
+}
