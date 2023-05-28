@@ -44,7 +44,7 @@ apiRouter.post(endpoint.concat('login'), (req, res) => {
                 if (checkSenha) {
                     var tokenJWT = jwt.sign({ id: usuario.usuarioId },
                         process.env.SECRET_KEY, {
-                        expiresIn: 3600
+                        expiresIn: 36000
                     })
                     res.status(200).json({
                         id: usuario.usuarioId,
@@ -56,7 +56,7 @@ apiRouter.post(endpoint.concat('login'), (req, res) => {
                     return
                 }
             }
-            res.status(200).json({ message: 'Login ou senha incorretos' })
+            res.status(401).json({ message: 'Login ou senha incorretos' })
         })
         .catch(err => {
             res.status(500).json({

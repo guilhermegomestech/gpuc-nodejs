@@ -1,10 +1,24 @@
 const express = require('express');
+const jwt = require('jsonwebtoken')
 const produtos = require('../../../data/produtos/produtos-faker');
 const endpoint = '/';
-
+const knex = require('knex')({
+    client: 'sqlite3',
+    connection: {
+        filename: './dev.sqlite3'
+      }
+})
 let apiRouter = express.Router();
 
-var lista_produtos = produtos.people;
+var lista_produtos =  [
+        { id: 1, descricao: "Arroz parboilizado 5Kg", preco: 25.00, marca: "Tio João" },
+        { id: 2, descricao: "Maionese 250gr", preco: 7.20, marca: "Helmans" },
+        { id: 3, descricao: "Iogurte Natural 200ml", preco: 2.50, marca: "Itambé" },
+        { id: 4, descricao: "Batata Maior Palha 300gr", preco: 15.20, marca: "Chipps" },
+        { id: 5, descricao: "Nescau 400gr", preco: 8.00, marca: "Nestlé" },
+    ]
+
+// var lista_produtos = produtos.people;
 
 let checkToken = (req, res, next) => {
     let authToken = req.headers["authorization"]
@@ -17,6 +31,7 @@ let checkToken = (req, res, next) => {
     }
     jwt.verify(req.token, process.env.SECRET_KEY, (err, decodeToken) => {
         if (err) {
+            console.log(err)
             res.status(401).json({ message: 'Acesso negado' })
             return
         }
@@ -26,8 +41,9 @@ let checkToken = (req, res, next) => {
 };
 
 let isAdmin = (req, res, next) => {
+    console.log(req.usuarioId)
     knex
-        .select('*').from('usuario').where({ id: req.usuarioId })
+        .select('*').from('usuario').where({ usuarioId: req.usuarioId })
         .then((usuarios) => {
             if (usuarios.length) {
                 let usuario = usuarios[0]
@@ -69,6 +85,7 @@ apiRouter.get(endpoint + ':produtoId', function (req, res) {
 });
 
 apiRouter.post(endpoint, checkToken, isAdmin, function (req, res) {
+    console.log(req.body)
     let produto = req.body;
 
     produto.id = buscarProximoIdProduto();
@@ -78,6 +95,7 @@ apiRouter.post(endpoint, checkToken, isAdmin, function (req, res) {
 });
 
 apiRouter.put(endpoint + ':produtoId', checkToken, isAdmin, function (req, res) {
+    console.log(req.body)
     let produto = req.body;
     lista_produtos = removerProduto(req.params.produtoId);
     adicionarProduto(produto);
