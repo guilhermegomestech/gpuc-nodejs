@@ -1,0 +1,51 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
+name: Build and deploy container app to Azure Web App - gp-puc-nodejs
+
+on:
+  push:
+    branches:
+      - develop
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: 'ubuntu-latest'
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Log in to registry
+      uses: docker/login-action@v2
+      with:
+        registry: https://pucmgwebgoat.azurecr.io/
+        username: ${{ secrets.AzureAppService_ContainerUsername_e90572621b2e482a8fd239a1785b4b1e }}
+        password: ${{ secrets.AzureAppService_ContainerPassword_53890b6a3c8e40de8041cf318d2701d6 }}
+
+    - name: Build and push container image to registry
+      uses: docker/build-push-action@v3
+      with:
+        push: true
+        tags: pucmgwebgoat.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_e90572621b2e482a8fd239a1785b4b1e }}/pucmgwebgoat:${{ github.sha }}
+        file: ./Dockerfile
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: 'production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+    - name: Deploy to Azure Web App
+      id: deploy-to-webapp
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'gp-puc-nodejs'
+        slot-name: 'production'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_bbd57f918cd544569772b9a117267149 }}
+        images: 'pucmgwebgoat.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_e90572621b2e482a8fd239a1785b4b1e }}/pucmgwebgoat:${{ github.sha }}'
