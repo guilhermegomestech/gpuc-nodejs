@@ -19,7 +19,7 @@ app.use('/api/v1/seguranca', segurancaRouter)
 app.use('/api/v1/produtos', produtosRouter)
 app.use('/api/v1/series', seriesRouter)
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3005;
 if(process.env.NODE_ENV == 'DEV'){
    app.listen(port);
 } else {
