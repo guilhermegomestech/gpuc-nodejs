@@ -29,7 +29,7 @@ let checkToken = (req, res, next) => {
         let token = authToken.split(' ')[1]
         req.token = token
     }
-    jwt.verify(req.token, process.env.SECRET_KEY, (err, decodeToken) => {
+    jwt.verify(req.token, process.env.SECRET_KEY || 'GENERIC_TOKEN', (err, decodeToken) => {
         if (err) {
             console.log(err)
             res.status(401).json({ message: 'Acesso negado' })
